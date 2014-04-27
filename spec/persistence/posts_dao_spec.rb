@@ -22,7 +22,6 @@ describe "PostsDAO" do
     PostsDAO.size.should equal initial_size
   end
 
-=begin
   it "shouldn't insert empty data in database" do
     initial_size = PostsDAO.size()
     PostsDAO.insert(Post.new("", ""))
@@ -48,7 +47,6 @@ describe "PostsDAO" do
 
 
   it "should mark post as shared in database" do
-
     initial_size = PostsDAO.size()
     post =Post.new("post3", "text3")
     id = PostsDAO.insert(post)
@@ -107,5 +105,4 @@ describe "PostsDAO" do
     PostsDAO.delete(id)
     PostsDAO.delete(id2)
   end
-=end
 end
