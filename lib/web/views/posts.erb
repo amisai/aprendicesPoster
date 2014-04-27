@@ -1,0 +1,25 @@
+<html>
+<head>
+  <title>Current posts</title>
+  <script>
+      function markAsShared(id) {
+          document.getElementById('id').value = id;
+          document.getElementById('form1').submit();
+      }
+  </script>
+</head>
+<body>
+<form id="form1" action="/markPostAsSeen" method="post">
+  <input type="hidden" id="id" name="id" value="">
+  <input type="hidden" id="id" name="key" value="<%=ENV['KEY']%>">
+</form>
+<p>Posts (<%= @posts.size %>):</p>
+<ul>
+  <% @posts.each do |post| %>
+      <!-- <%= post %> -->
+      <li><a href="<%= post.url %>"><%= post.text %></a>(<a href='javascript:markAsShared("<%= post.id %>");return false;'>Mark as shared</a>)</li>
+  <% end %>
+</ul>
+</body>
+</html>
+

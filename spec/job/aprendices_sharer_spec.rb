@@ -49,4 +49,17 @@ describe "AprendicesSharer" do
 
     PostsDAO.delete(id)
   end
+
+  it "should handle no posts to share" do
+    database = {'database' => "weekly_test"}
+    karmacracy = {'username' => "user", 'password' => "password"}
+    twitter = {'consumer_key' => "key1",'consumer_secret' => "secret", 'access_token' => "token", 'access_token_secret' =>"secret2"}
+    conf = {'env' => 'prod', 'database' => database, 'karmacracy' => karmacracy, 'twitter' => twitter}
+    ConfigLoader.any_instance.stub(:load_config).and_return conf
+
+    Twitter.should_receive(:update).exactly(0).times
+
+    AprendicesSharer.share_post
+
+  end
 end
