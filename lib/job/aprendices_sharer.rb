@@ -8,8 +8,7 @@ require_relative '../client/karmacracy_client'
 class AprendicesSharer
 
   def self.share_post()
-    config = ConfigLoader.new.load_config
-    archive = config['env'] == 'prod'
+    archive = ENV['env'] == 'prod'
 
     puts 'Starting. First we get url from unshared posts:'
     bookmark = PostsDAO.retrieve_unshared_posts()[0] || ""

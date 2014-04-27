@@ -1,16 +1,22 @@
 # encoding: UTF-8
 
 require 'mongo'
-
-require_relative '../config_loader'
+require 'uri'
 
 class PostsDAO
   include Mongo
 
+  @@db_connection = nil
 
-  @@config = ConfigLoader.new.load_config
-  # creates a single class instance, sets pool size but won't connect until used (lazy)
-  @@client = MongoClient.new('localhost', 27017, :pool_size => 5, :connect => false).db @@config['database']['mongo_database']
+  def self.get_connection
+    return @@db_connection if @@db_connection
+    puts("uri:#{ENV['MONGOHQ_URL']}")
+    db = URI.parse(ENV['MONGOHQ_URL'])
+    db_name = db.path.gsub(/^\//, '')
+    @@db_connection = Mongo::Connection.new(db.host, db.port).db(db_name)
+    @@db_connection.authenticate(db.user, db.password) unless (db.user.nil? || db.user.nil?)
+    @@db_connection
+  end
 
   def self.size
     posts = get_collection
@@ -79,7 +85,8 @@ class PostsDAO
   end
 
   def self.get_collection
-    @@client['posts']
+    con = get_connection
+    con['posts']
   end
 
   def self.get_id_as_bson(id)

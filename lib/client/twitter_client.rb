@@ -1,16 +1,14 @@
 # encoding: UTF-8
 
 require 'twitter'
-require_relative '../../lib/config_loader'
 
 class TwitterClient
   def initialize()
-    config = ConfigLoader.new.load_config
     @client = Twitter.configure do |configTwitter|
-      configTwitter.consumer_key = config['twitter']['consumer_key']
-      configTwitter.consumer_secret = config['twitter']['consumer_secret']
-      configTwitter.oauth_token = config['twitter']['access_token']
-      configTwitter.oauth_token_secret = config['twitter']['access_token_secret']
+      configTwitter.consumer_key = ENV['twitter_consumer_key']
+      configTwitter.consumer_secret = ENV['twitter_consumer_secret']
+      configTwitter.oauth_token = ENV['twitter_access_token']
+      configTwitter.oauth_token_secret = ENV['twitter_access_token_secret']
     end
   end
 
