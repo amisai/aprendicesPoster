@@ -5,6 +5,7 @@ require 'sinatra/base'
 require_relative '../persistence/posts_dao'
 require_relative '../job/aprendices_sharer'
 require_relative '../job/aprendices_scrapper'
+require_relative '../scheduled_job/scrapper_job'
 
 class MyApp < Sinatra::Base
   configure do
@@ -12,6 +13,7 @@ class MyApp < Sinatra::Base
     set :app_file, __FILE__
     set :port, ENV['PORT']
     enable :logging
+    FistOfFury.attack!
   end
 
   helpers do
