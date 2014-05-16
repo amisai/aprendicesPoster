@@ -8,6 +8,7 @@ class PosterJob
   include FistOfFury::Recurrent
 
   def perform
+    puts 'starting PosterJob'
     AprendicesSharer.share_post
   end
 end

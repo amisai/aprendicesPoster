@@ -15,8 +15,8 @@ class MyApp < Sinatra::Base
     set :port, ENV['PORT']
     enable :logging
     FistOfFury.attack! do
-      ScrapperJob.recurs { hourly(2) }
       PosterJob.recurs { minutely(5) }
+      ScrapperJob.recurs { hourly(2) }
     end
   end
 

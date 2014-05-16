@@ -8,6 +8,7 @@ class ScrapperJob
   include FistOfFury::Recurrent
 
   def perform
+    puts 'starting ScrapperJob'
     AprendicesScrapper.search_new_posts
   end
 end
