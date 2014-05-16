@@ -1,7 +1,7 @@
 require 'sucker_punch'
 require 'fist_of_fury'
 
-require_relative '../job/aprendices_scrapper'
+require_relative '../job/aprendices_sharer'
 
 class ScrapperJob
   include SuckerPunch::Job
@@ -10,6 +10,6 @@ class ScrapperJob
   recurs { hourly(2) }
 
   def perform
-    AprendicesScrapper.search_new_posts
+    AprendicesSharer.share_post
   end
 end
