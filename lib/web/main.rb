@@ -6,6 +6,7 @@ require_relative '../persistence/posts_dao'
 require_relative '../job/aprendices_sharer'
 require_relative '../job/aprendices_scrapper'
 require_relative '../scheduled_job/scrapper_job'
+require_relative '../scheduled_job/poster_job'
 
 class MyApp < Sinatra::Base
   configure do
@@ -13,7 +14,10 @@ class MyApp < Sinatra::Base
     set :app_file, __FILE__
     set :port, ENV['PORT']
     enable :logging
-    FistOfFury.attack!
+    FistOfFury.attack! do
+      ScrapperJob.recurs { hourly(2) }
+      PosterJob.recurs { minutely(5) }
+    end
   end
 
   helpers do

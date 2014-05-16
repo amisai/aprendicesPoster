@@ -7,8 +7,6 @@ class PosterJob
   include SuckerPunch::Job
   include FistOfFury::Recurrent
 
-  recurs { minutely(5) }
-
   def perform
     AprendicesSharer.share_post
   end
