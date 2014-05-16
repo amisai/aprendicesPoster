@@ -55,7 +55,7 @@ class PostsDAO
   def self.retrieve_unshared_posts
     result = []
     posts = get_collection
-    posts.find({"shared" => false}).sort({"_id" => -1}).each do |doc|
+    posts.find({"shared" => false}).sort({"_id" => 1}).each do |doc|
       result << Post.from_hash(doc)
     end
     result
