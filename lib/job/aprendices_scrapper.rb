@@ -11,5 +11,6 @@ class AprendicesScrapper
     posts.each do |post|
       PostsDAO.insert(post)
     end
+    puts "Looked for new posts. Now we have #{PostsDAO.size} posts"
   end
 end
