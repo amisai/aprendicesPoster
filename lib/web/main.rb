@@ -9,14 +9,27 @@ require_relative '../scheduled_job/scrapper_job'
 require_relative '../scheduled_job/poster_job'
 
 class MyApp < Sinatra::Base
+  def self.extract_from_env(var, default)
+    value = ENV[var]
+    if value
+      value = value.to_i
+    else
+      value =default
+    end
+    value
+  end
+
   configure do
     Dotenv.load
     set :app_file, __FILE__
     set :port, ENV['PORT']
     enable :logging
+    post_freq = MyApp.extract_from_env('POST_FREQUENCY', 8)
+    scrapping_freq = MyApp.extract_from_env('SCRAPPING_FREQUENCY', 2)
+
     FistOfFury.attack! do
-      PosterJob.recurs { minutely(5) }
-      ScrapperJob.recurs { hourly(2) }
+      PosterJob.recurs { hourly(post_freq) }
+      ScrapperJob.recurs { hourly(scrapping_freq) }
     end
   end
 
