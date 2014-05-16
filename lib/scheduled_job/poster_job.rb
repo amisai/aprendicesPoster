@@ -7,7 +7,7 @@ class ScrapperJob
   include SuckerPunch::Job
   include FistOfFury::Recurrent
 
-  recurs { hourly(2) }
+  recurs { minutely(5) }
 
   def perform
     AprendicesSharer.share_post
