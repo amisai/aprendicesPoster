@@ -3,3 +3,4 @@
 .bundle
 .idea
 coverage/
+config/env_prod

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), "/../lib/pir"))
+$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), "/../config"))
+
+require 'date'
+require 'dotenv'
+require_relative '../lib/job/aprendices_sharer'
+
+Dotenv.load
+puts "starting AprendicesSharer #{DateTime.now.to_s}"
+AprendicesSharer.share_post
+puts "Finishing AprendicesSharer at #{DateTime.now.to_s}"

@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), "/../lib/"))
+$LOAD_PATH << File.expand_path(File.join(File.dirname(__FILE__), "/../config"))
+
+require 'date'
+require 'dotenv'
+require_relative '../lib/job/aprendices_scrapper'
+
+Dotenv.load
+puts "starting AprendicesScrapper at #{DateTime.now.to_s}"
+AprendicesScrapper.search_new_posts
+puts "Finishing AprendicesScrapper at #{DateTime.now.to_s}"
