@@ -10,12 +10,12 @@ class AprendicesClient
     @doc = Nokogiri::HTML(open(@@url))
   end
 
-  def search_new_posts()
+  def search_new_posts
     posts = []
     articles = @doc.css("div[role='article']")
     puts articles.length
-    articles.each do |article|
-      intro = get_intro(article)
+    articles.each_with_index do |article, index|
+
       url = get_real_link(article)
       text = get_text(article)
 
@@ -26,30 +26,51 @@ class AprendicesClient
 
   def get_intro(article)
     begin
-      article.css("div[class='Ct']").children[0].text ||article.css("div[class='Ct']").children[0].children[0].text
+      element = get_element(article, "div[class='Ct']")
+      element.children[0].text ||element.children[0].children[0].text
     rescue
       ''
     end
   end
 
   def get_real_link(article)
-    element = article.css("div[class='wI']")
-    element = article.css("div[class='yh Du']") if element.empty?
-    element = article.css("div[class='rCauNb']") if element.empty?
+    link = ''
+    element = get_element(article, "div[class='wI']")
+    element = get_element(article, "div[class='yh Du']") if element.empty?
+    element = get_element(article, "div[class='rCauNb']") if element.empty?
+    element = get_element(article, "div[class='Ct']") if element.empty?
     begin
-      element.children[0].attribute('href').value
+      link = element.children.select { |child| child.attribute('href') }.first.attribute('href').value
     rescue
       ''
     end
+    link
   end
 
   def get_text(article)
-    element = article.css("div[class='wI']")
-    element = article.css("div[class='yh Du']") if element.empty?
+    element1 = get_element(article, "div[class='Ct']")
+    element2 = get_element(article, "div[class='wI']")
+    element3 = get_element(article, "div[class='yh Du']")
+
+    text1=extract_text(element1)
+    text2=extract_text(element2)
+    text3=extract_text(element3)
+    select_text([text1, text2, text3])
+  end
+
+  def select_text(texts)
+    texts.select { |text| !text[/http/] }.sort_by { |x| x.length }.last
+  end
+
+  def extract_text(element)
     begin
       element.children[0].text || element.children[0].children[0].text
     rescue
       ''
     end
+  end
+
+  def get_element(article, selector)
+    article.css(selector)
   end
 end
