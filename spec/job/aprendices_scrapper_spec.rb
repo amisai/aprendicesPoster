@@ -11,7 +11,7 @@ describe "AprendicesScrapper" do
 
     AprendicesScrapper.search_new_posts
 
-    PostsDAO.retrieve_unshared_posts.count.should be 17
+    PostsDAO.retrieve_unshared_posts.count.should be 19
 
     PostsDAO.deleteAll
   end

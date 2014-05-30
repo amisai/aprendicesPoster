@@ -7,7 +7,7 @@ require_relative '../persistence/posts_dao'
 class AprendicesScrapper
 
   def self.search_new_posts
-    posts = AprendicesClient.new().search_new_posts
+    posts = AprendicesClient.new(ENV['GROUP_URL']).search_new_posts
     posts.each do |post|
       PostsDAO.insert(post)
     end

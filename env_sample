@@ -1,8 +1,8 @@
 KEY=pasword
 PORT=1234
 MONGOHQ_URL=mongodb://@localhost:27017/bbdd
+GROUP_URL=https://plus.google.com/communities/114859785439968913587
 
-#deAprendices
 twitter_consumer_key=consumer_key
 twitter_consumer_secret=consumer_secret
 twitter_access_token=access-token

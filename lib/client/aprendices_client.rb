@@ -4,10 +4,9 @@ require 'open-uri'
 require_relative '../model/post'
 
 class AprendicesClient
-  @@url = 'https://plus.google.com/communities/114859785439968913587'
 
-  def initialize
-    @doc = Nokogiri::HTML(open(@@url))
+  def initialize(url)
+    @doc = Nokogiri::HTML(open(url))
   end
 
   def search_new_posts
