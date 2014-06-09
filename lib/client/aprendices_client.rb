@@ -6,7 +6,9 @@ require_relative '../model/post'
 class AprendicesClient
 
   def initialize(url)
-    @doc = Nokogiri::HTML(open(url))
+    html = open(url)
+    @doc = Nokogiri::HTML(html.read)
+    @doc.encoding = 'utf-8'
   end
 
   def search_new_posts
@@ -17,10 +19,22 @@ class AprendicesClient
 
       url = get_real_link(article)
       text = get_text(article)
+      type = get_type(article)
 
-      posts<<Post.new(url, text)
+      if (type != "Anuncios: cursos, eventos, conferencias,...")
+        posts<<Post.new(url, text)
+      end
     end
     posts
+  end
+
+  def get_type(article)
+    begin
+      element = get_element(article, "span[class='Wt Hm Ve tr']")
+      element.children[0].text ||element.children[0].children[0].text
+    rescue
+      ''
+    end
   end
 
   def get_intro(article)

@@ -5,6 +5,7 @@
       function markAsShared(id) {
           document.getElementById('id').value = id;
           document.getElementById('form1').submit();
+          return false;
       }
   </script>
 </head>
@@ -17,7 +18,7 @@
 <ul>
   <% @posts.each do |post| %>
       <!-- <%= post %> -->
-      <li><a href="<%= post.url %>"><%= post.text %></a>(<a href='javascript:markAsShared("<%= post.id %>");return false;'>Mark as shared</a>)</li>
+      <li><a href="<%= post.url %>"><%= post.text %></a>(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)</li>
   <% end %>
 </ul>
 </body>
