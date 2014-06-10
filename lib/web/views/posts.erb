@@ -3,22 +3,32 @@
   <title>Current posts</title>
   <script>
       function markAsShared(id) {
-          document.getElementById('id').value = id;
+          document.getElementById('idMark').value = id;
           document.getElementById('form1').submit();
+          return false;
+      }
+
+      function publishOnTwitter(id) {
+          document.getElementById('idPublish').value = id;
+          document.getElementById('form2').submit();
           return false;
       }
   </script>
 </head>
 <body>
 <form id="form1" action="/markPostAsSeen" method="post">
-  <input type="hidden" id="id" name="id" value="">
-  <input type="hidden" id="id" name="key" value="<%=ENV['KEY']%>">
+  <input type="hidden" id="idMark" name="idMark" value="">
+  <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
+</form>
+<form id="form2" action="/publishOnTwitter" method="post">
+  <input type="hidden" id="idPublish" name="idPublish" value="">
+  <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
 </form>
 <p>Posts (<%= @posts.size %>):</p>
 <ul>
   <% @posts.each do |post| %>
       <!-- <%= post %> -->
-      <li><a href="<%= post.url %>"><%= post.text %></a>(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)</li>
+      <li><a href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)</li>
   <% end %>
 </ul>
 </body>

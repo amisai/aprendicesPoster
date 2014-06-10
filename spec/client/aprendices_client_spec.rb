@@ -7,7 +7,7 @@ describe "AprendicesClient" do
 
   it "should parse Aprendices page and extract information" do
 
-    html_content = File.open(File.dirname(__FILE__) + '/../fixtures/aprendices_22_05_2014.html').read
+    html_content = File.open(File.dirname(__FILE__) + '/../fixtures/aprendices_22_05_2014.html')
 
     AprendicesClient.any_instance.stub(:open).and_return html_content
 

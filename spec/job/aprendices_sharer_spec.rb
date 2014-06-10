@@ -31,6 +31,24 @@ describe "AprendicesSharer" do
     PostsDAO.delete(id)
   end
 
+  it "should post selected link through Twitter" do
+
+    post =Post.new("urlPost2", "text2")
+    id = PostsDAO.insert(post)
+
+    Struct.new("Response", :body)
+    http_response = Struct::Response.new("kUrl2")
+
+    Net::HTTP.stub!(:get_response).and_return http_response
+
+    msg = "From Aprendices: text2 - kUrl2"
+    Twitter.should_receive(:update).with(msg).and_return true
+
+    AprendicesSharer.publish_post(id)
+
+    PostsDAO.delete(id)
+  end
+
   it "should handle too long texts when sharing links" do
     post =Post.new("link", "123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I123456789J123456789K123456789L123456789M123456789N123456789O")
     id = PostsDAO.insert(post)

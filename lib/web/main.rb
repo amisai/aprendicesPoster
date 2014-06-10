@@ -55,10 +55,16 @@ class ApprendicesApp < Sinatra::Base
 
   post '/markPostAsSeen' do
     if (check_security_param)
-      PostsDAO.mark_post_as_shared(params[:id])
+      PostsDAO.mark_post_as_shared(params[:idMark])
       redirect to("/list/?key=#{ENV['KEY']}")
     end
+  end
 
+  post '/publishOnTwitter' do
+    if (check_security_param)
+      AprendicesSharer.publish_post(params[:idPublish])
+      redirect to("/list/?key=#{ENV['KEY']}")
+    end
   end
 
   run! if app_file == $0

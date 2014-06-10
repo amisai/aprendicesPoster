@@ -8,12 +8,21 @@ require_relative '../client/karmacracy_client'
 class AprendicesSharer
 
   def self.share_post()
-    archive = ENV['env'] == 'prod'
-
     puts 'Starting. First we get url from unshared posts:'
     bookmark = PostsDAO.retrieve_unshared_posts()[0] || ""
+    send_through_karmacrazy_and_twitter bookmark
+  end
 
+  def self.publish_post(id)
+    puts("publishing #{id}")
+    bookmark = PostsDAO.find_post(id) || ""
+    send_through_karmacrazy_and_twitter bookmark
+  end
+
+  def self.send_through_karmacrazy_and_twitter(bookmark)
     if "" != bookmark
+      archive = ENV['env'] == 'prod'
+
       puts("bookmark:#{bookmark}")
       uri = bookmark.url
       puts "returned uri:#{uri}"
@@ -37,4 +46,5 @@ class AprendicesSharer
       message
     end
   end
+
 end
