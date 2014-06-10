@@ -1,6 +1,7 @@
 <html>
 <head>
   <title>Current posts</title>
+  <link rel="stylesheet" href="/css/aprendices.css" type="text/css" media="screen">
   <script>
       function markAsShared(id) {
           document.getElementById('idMark').value = id;
@@ -13,9 +14,70 @@
           document.getElementById('form2').submit();
           return false;
       }
+
+      function editTitle(id) {
+          var title = document.getElementById("title");
+
+          title.value = document.getElementById("post_" + id).innerHTML;
+
+          form = document.getElementById("formEditTitle");
+          form.id.value = id;
+
+          showTitleForm(true)
+      }
+
+      function isEmpty(formElement) {
+          if (formElement.value != undefined) {
+              var charSequence = formElement.value;
+
+              return (charSequence == undefined || charSequence.length == 0);
+          } else {
+              return false;
+          }
+      }
+
+      function submitTitle() {
+          var form = document.getElementById("formEditTitle");
+
+          var title = document.getElementById("title");
+
+          if (!isEmpty(title)) {
+              form = document.getElementById("formEditTitle");
+              form.submit();
+              return false;
+          }
+      }
+
+      function showTitleForm(show) {
+          var layer = document.getElementById("formTitleLayer");
+          if (show) {
+              layer.style.display = 'block';
+          } else {
+              layer.style.display = 'none';
+          }
+          return false;
+      }
   </script>
 </head>
 <body>
+<div id="container">
+  <div id="formTitleLayer">
+    <div id="formTitle">
+      <form id="formEditTitle" action="/editTitle" method="post">
+        <input type="hidden" name="id" value="">
+        <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
+
+        <div id="inputTitle">
+          <label for="title">Post title:</label><input type="text" id="title" name="title" value=""/>
+        </div>
+        <div id="actionTitle">
+          <input type="button" name="saveTitle" id="saveTitle" value="Save" onclick="submitTitle();"/>
+          <input type="button" name="cancelTitle" value="Cancel" onclick="showTitleForm(false)"/>
+        </div>
+      </form>
+    </div>
+  </div>
+
 <form id="form1" action="/markPostAsSeen" method="post">
   <input type="hidden" id="idMark" name="idMark" value="">
   <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
@@ -28,9 +90,10 @@
 <ul>
   <% @posts.each do |post| %>
       <!-- <%= post %> -->
-      <li><a href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)</li>
+      <li><a id="post_<%= post.id %>" href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)&nbsp;-&nbsp;(<a href='javascript:editTitle("<%= post.id %>");'>Edit title</a>)</li>
   <% end %>
 </ul>
+    </div>
 </body>
 </html>
 

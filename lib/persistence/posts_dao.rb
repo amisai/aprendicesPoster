@@ -84,6 +84,15 @@ class PostsDAO
     end
   end
 
+  def self.update_text(id, text)
+    posts = get_collection
+    begin
+      posts.update({"_id" => get_id_as_bson(id)}, {"$set" => {"text" => text}})
+    rescue
+      puts("problem while marking #{id} as shared")
+    end
+  end
+
   def self.get_collection
     con = get_connection
     con['posts']

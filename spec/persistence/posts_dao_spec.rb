@@ -22,6 +22,18 @@ describe "PostsDAO" do
     PostsDAO.size.should equal initial_size
   end
 
+  it "should insert (and update) data in database" do
+    post =Post.new("post", "text")
+    id = PostsDAO.insert(post)
+
+    PostsDAO.update_text(id, "text2")
+
+    expect(PostsDAO.find_post(id).text).to eq("text2")
+
+    PostsDAO.delete(id)
+
+  end
+
   it "shouldn't insert empty data in database" do
     initial_size = PostsDAO.size()
     PostsDAO.insert(Post.new("", ""))

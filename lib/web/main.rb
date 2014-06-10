@@ -52,7 +52,6 @@ class ApprendicesApp < Sinatra::Base
     end
   end
 
-
   post '/markPostAsSeen' do
     if (check_security_param)
       PostsDAO.mark_post_as_shared(params[:idMark])
@@ -63,6 +62,14 @@ class ApprendicesApp < Sinatra::Base
   post '/publishOnTwitter' do
     if (check_security_param)
       AprendicesSharer.publish_post(params[:idPublish])
+      redirect to("/list/?key=#{ENV['KEY']}")
+    end
+  end
+
+  post '/editTitle' do
+    if (check_security_param)
+      PostsDAO.update_text(params[:id], params[:title])
+
       redirect to("/list/?key=#{ENV['KEY']}")
     end
   end
