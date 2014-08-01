@@ -21,8 +21,12 @@ class AprendicesClient
       text = get_text(article)
       type = get_type(article)
 
-      if (type != "Anuncios: cursos, eventos, conferencias,...")
+      puts "url:#{url}-text:#{text}-type:#{type}"
+
+      if (type != "Courses, events, conferences,...")
         posts<<Post.new(url, text)
+      else
+        puts "removing url:#{url}-type:#{type}"
       end
     end
     posts

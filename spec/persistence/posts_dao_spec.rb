@@ -91,6 +91,7 @@ describe "PostsDAO" do
   end
 
   it "should get all posts from database" do
+    PostsDAO.deleteAll
     id = PostsDAO.insert(Post.new("post4", "text4"))
     id2 = PostsDAO.insert(Post.new("post5", "text5"))
 
@@ -105,6 +106,8 @@ describe "PostsDAO" do
   end
 
   it "should get all unshared posts from database" do
+    PostsDAO.deleteAll
+
     id = PostsDAO.insert(Post.new("post6", "text6"))
     id2 = PostsDAO.insert(Post.new("post7", "text7"))
 

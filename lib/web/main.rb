@@ -5,6 +5,7 @@ require 'sinatra/base'
 require_relative '../persistence/posts_dao'
 require_relative '../job/aprendices_sharer'
 require_relative '../job/aprendices_scrapper'
+require_relative '../job/rss_generator'
 
 class ApprendicesApp < Sinatra::Base
 
@@ -72,6 +73,10 @@ class ApprendicesApp < Sinatra::Base
 
       redirect to("/list/?key=#{ENV['KEY']}")
     end
+  end
+
+  get '/rss' do
+    RSSGenerator.generate_rss
   end
 
   run! if app_file == $0
