@@ -1,5 +1,5 @@
 set :application, 'app1'
-set :repo_url, 'git@carmelo.dnsdojo.org:aprendicesposter.git'
+set :repo_url, 'git@carmelo.dnsdojo.org:root/aprendicesposter.git'
 
 # Default branch is :master
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }.call
