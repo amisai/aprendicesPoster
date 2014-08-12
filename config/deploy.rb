@@ -1,4 +1,4 @@
-set :application, 'app1'
+set :application, 'aprendicesPoster'
 set :repo_url, 'git@carmelo.dnsdojo.org:root/aprendicesposter.git'
 
 # Default branch is :master
