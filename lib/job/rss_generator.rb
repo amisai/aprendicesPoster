@@ -16,7 +16,7 @@ class RSSGenerator
         maker.items.new_item do |item|
           item.link = post.url
           item.title = post.text
-          item.updated = Time.now.to_s
+          item.updated = post.id.generation_time.to_s
         end
       end
 
