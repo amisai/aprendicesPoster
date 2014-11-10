@@ -24,6 +24,10 @@ class ApprendicesApp < Sinatra::Base
     def check_security_param
       ENV['KEY']==params[:key]
     end
+
+    def format_bson_as_time(id)
+      return id.generation_time
+    end
   end
 
   get '/' do

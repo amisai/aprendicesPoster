@@ -6,8 +6,8 @@ describe "RSSGenerator" do
 
   it "should generate RSS with last 20 posts" do
     PostsDAO.deleteAll
-    PostsDAO.insert(Post.new("urlPost1", "text1"))
-    PostsDAO.insert(Post.new("urlPost2", "text2"))
+    PostsDAO.insert(Post.new("urlPost1", "text1", "type1"))
+    PostsDAO.insert(Post.new("urlPost2", "text2", "type2"))
 
     result = RSSGenerator.generate_rss
 

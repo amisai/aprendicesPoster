@@ -6,7 +6,7 @@ describe "PostsDAO" do
 
   it "should insert (and delete) data in database" do
     initial_size = PostsDAO.size()
-    post =Post.new("post", "text")
+    post =Post.new("post", "text", "type")
     id = PostsDAO.insert(post)
 
     PostsDAO.size.should equal (initial_size + 1)
@@ -23,7 +23,7 @@ describe "PostsDAO" do
   end
 
   it "should insert (and update) data in database" do
-    post =Post.new("post", "text")
+    post =Post.new("post", "text", "type")
     id = PostsDAO.insert(post)
 
     PostsDAO.update_text(id, "text2")
@@ -36,8 +36,8 @@ describe "PostsDAO" do
 
   it "shouldn't insert empty data in database" do
     initial_size = PostsDAO.size()
-    PostsDAO.insert(Post.new("", ""))
-    PostsDAO.insert(Post.new(nil, nil))
+    PostsDAO.insert(Post.new("", "", ""))
+    PostsDAO.insert(Post.new(nil, nil, nil))
     PostsDAO.insert(nil)
 
     PostsDAO.size.should equal initial_size
@@ -45,7 +45,7 @@ describe "PostsDAO" do
 
   it "should avoid inserting duplicated posts in database" do
     initial_size = PostsDAO.size()
-    post = Post.new("post2", "text2")
+    post = Post.new("post2", "text2", "type2")
     id = PostsDAO.insert(post)
 
     PostsDAO.size.should equal (initial_size + 1)
@@ -60,7 +60,7 @@ describe "PostsDAO" do
 
   it "should mark post as shared in database" do
     initial_size = PostsDAO.size()
-    post =Post.new("post3", "text3")
+    post = Post.new("post3", "text3", 'type3')
     id = PostsDAO.insert(post)
 
     PostsDAO.mark_post_as_shared(id)
@@ -76,7 +76,7 @@ describe "PostsDAO" do
   end
 
   it "should handle invalid values when marking post as shared in database" do
-    post =Post.new("post3a", "text3a")
+    post =Post.new("post3a", "text3a", 'type3a')
     id = PostsDAO.insert(post)
 
     PostsDAO.mark_post_as_shared(nil)
@@ -92,8 +92,8 @@ describe "PostsDAO" do
 
   it "should get all posts from database" do
     PostsDAO.deleteAll
-    id = PostsDAO.insert(Post.new("post4", "text4"))
-    id2 = PostsDAO.insert(Post.new("post5", "text5"))
+    id = PostsDAO.insert(Post.new("post4", "text4", 'type4'))
+    id2 = PostsDAO.insert(Post.new("post5", "text5", 'type5'))
 
     posts = PostsDAO.retrieve_all_posts()
 
@@ -108,11 +108,11 @@ describe "PostsDAO" do
   it "should get all unshared posts from database" do
     PostsDAO.deleteAll
 
-    id = PostsDAO.insert(Post.new("post6", "text6"))
-    id2 = PostsDAO.insert(Post.new("post7", "text7"))
+    id = PostsDAO.insert(Post.new("post6", "text6", 'type6'))
+    id2 = PostsDAO.insert(Post.new("post7", "text7", 'type7'))
 
     PostsDAO.mark_post_as_shared(id)
-    posts = PostsDAO.retrieve_unshared_posts()
+    posts = PostsDAO.retrieve_unshared_posts(-1)
 
     posts.size.should be 1
     posts[0].url.should eq("post7")

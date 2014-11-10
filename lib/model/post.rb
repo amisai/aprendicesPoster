@@ -1,9 +1,10 @@
 class Post
-  attr_accessor :url, :text, :shared, :id
+  attr_accessor :url, :text, :type, :shared, :id
 
-  def initialize(url, text, shared=false, id=nil)
+  def initialize(url, text, type, shared=false, id=nil)
     @url = url
     @text = text
+    @type = type
     @shared = shared
     @id = id
   end
@@ -22,6 +23,6 @@ class Post
 
 
   def self.from_hash(h)
-    return Post.new(h['url'], h['text'], h['shared'], h['_id'])
+    return Post.new(h['url'], h['text'], h['type'], h['shared'], h['_id'])
   end
 end

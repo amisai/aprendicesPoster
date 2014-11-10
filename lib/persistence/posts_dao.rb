@@ -10,6 +10,20 @@ class PostsDAO
 
   def self.get_connection
     return @@db_connection if @@db_connection
+=begin
+
+#puts("uri:#{ENV['MONGOHQ_URL']}")
+#db = URI.parse(ENV['MONGOHQ_URL'])
+
+    db_host = ENV['MONGODB_PORT_27017_TCP_ADDR']
+    db_port = ENV['MONGODB_PORT_27017_TCP_PORT']
+    db_name = ENV['MONGODB_DB']
+
+    #db_name = db.path.gsub(/^\//, '')
+    @@db_connection = Mongo::Connection.new(db_host, db_port).db(db_name)
+    #@@db_connection.authenticate(db.user, db.password) unless (db.user.nil? || db.user.nil?)
+
+=end
     puts("uri:#{ENV['MONGOHQ_URL']}")
     db = URI.parse(ENV['MONGOHQ_URL'])
     db_name = db.path.gsub(/^\//, '')
@@ -52,10 +66,17 @@ class PostsDAO
     result
   end
 
-  def self.retrieve_unshared_posts
+  def self.retrieve_unshared_posts (hours_old = 0)
     result = []
     posts = get_collection
-    posts.find({"shared" => false}).sort({"_id" => 1}).each do |doc|
+
+    time = Time.now
+    time = time - hours_old * 60 * 60
+    time_id = BSON::ObjectId.from_time(time)
+
+    puts "time:#{time}-time_id:#{time_id}"
+
+    posts.find({"shared" => false, '_id' => {'$lte' => time_id}}).sort({"_id" => 1}).each do |doc|
       result << Post.from_hash(doc)
     end
     result

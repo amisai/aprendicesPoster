@@ -90,7 +90,7 @@
 <ul>
   <% @posts.each do |post| %>
       <!-- <%= post %> -->
-      <li><a id="post_<%= post.id %>" href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)&nbsp;-&nbsp;(<a href='javascript:editTitle("<%= post.id %>");'>Edit title</a>)</li>
+      <li>(<%= format_bson_as_time(post.id) %>)&nbsp;-&nbsp;    <a id="post_<%= post.id %>" href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<%= post.type %>)&nbsp;-&nbsp;(<a href='javascript:markAsShared("<%= post.id %>");'>Mark as shared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)&nbsp;-&nbsp;(<a href='javascript:editTitle("<%= post.id %>");'>Edit title</a>)</li>
   <% end %>
 </ul>
     </div>

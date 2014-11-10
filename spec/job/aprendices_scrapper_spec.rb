@@ -12,7 +12,11 @@ describe "AprendicesScrapper" do
 
     AprendicesScrapper.search_new_posts
 
-    PostsDAO.retrieve_unshared_posts.count.should be 19
+    posts = PostsDAO.retrieve_unshared_posts -1
+
+    posts[0].text.should eq 'The SOLID Design Principles Deconstructed by Kevlin Henney - YOW! 2013 | Eventer'
+
+    posts.count.should be 15
 
     PostsDAO.deleteAll
   end

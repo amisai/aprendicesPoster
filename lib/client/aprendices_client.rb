@@ -9,6 +9,15 @@ class AprendicesClient
     html = open(url)
     @doc = Nokogiri::HTML(html.read)
     @doc.encoding = 'utf-8'
+    @banned_types = IO.readlines 'config/banned_types.lst'
+
+    if @banned_types
+      @banned_types.map! { |type| type.chomp}
+    else
+     @banned_types = []
+    end
+
+    puts "banned_types:#{@banned_types}"
   end
 
   def search_new_posts
@@ -21,10 +30,8 @@ class AprendicesClient
       text = get_text(article)
       type = get_type(article)
 
-      puts "url:#{url}-text:#{text}-type:#{type}"
-
-      if (type != "Courses, events, conferences,...")
-        posts<<Post.new(url, text)
+      if (@banned_types.index(type) == nil)
+        posts<<Post.new(url, text, type)
       else
         puts "removing url:#{url}-type:#{type}"
       end

@@ -15,7 +15,7 @@ describe "AprendicesSharer" do
 
   it "should share one karmacrazied link through Twitter" do
 
-    post =Post.new("urlPost", "text")
+    post =Post.new("urlPost", "text", "type")
     id = PostsDAO.insert(post)
 
     Struct.new("Response", :body)
@@ -26,14 +26,14 @@ describe "AprendicesSharer" do
     msg = "From Aprendices: text - kUrl"
     Twitter.should_receive(:update).with(msg).and_return true
 
-    AprendicesSharer.share_post
+    AprendicesSharer.share_post -1
 
     PostsDAO.delete(id)
   end
 
   it "should post selected link through Twitter" do
 
-    post =Post.new("urlPost2", "text2")
+    post =Post.new("urlPost2", "text2", "type2")
     id = PostsDAO.insert(post)
 
     Struct.new("Response", :body)
@@ -50,7 +50,7 @@ describe "AprendicesSharer" do
   end
 
   it "should handle too long texts when sharing links" do
-    post =Post.new("link", "123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I123456789J123456789K123456789L123456789M123456789N123456789O")
+    post =Post.new("link", "123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I123456789J123456789K123456789L123456789M123456789N123456789O", "type3")
     id = PostsDAO.insert(post)
 
     Struct.new("Response", :body)
@@ -61,7 +61,7 @@ describe "AprendicesSharer" do
     msg = "From Aprendices: 123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I1234... - http://kcy.me/13ajl"
     Twitter.should_receive(:update).with(msg).and_return true
 
-    AprendicesSharer.share_post
+    AprendicesSharer.share_post -1
 
     PostsDAO.delete(id)
   end
