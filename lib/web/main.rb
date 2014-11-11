@@ -43,6 +43,13 @@ class ApprendicesApp < Sinatra::Base
     end
   end
 
+  get '/published/' do
+    if (check_security_param)
+      @posts = PostsDAO.retrieve_shared_posts
+      erb :published
+    end
+  end
+
   get '/getPosts/' do
     if (check_security_param)
       AprendicesScrapper.search_new_posts
@@ -61,6 +68,13 @@ class ApprendicesApp < Sinatra::Base
     if (check_security_param)
       PostsDAO.mark_post_as_shared(params[:idMark])
       redirect to("/list/?key=#{ENV['KEY']}")
+    end
+  end
+
+  post '/markPostAsUnseen' do
+    if (check_security_param)
+      PostsDAO.mark_post_as_unshared(params[:idMark])
+      redirect to("/published/?key=#{ENV['KEY']}")
     end
   end
 

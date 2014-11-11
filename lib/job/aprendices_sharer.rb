@@ -14,7 +14,7 @@ class AprendicesSharer
   end
 
   def self.publish_post(id)
-    puts("publishing #{id}")
+    puts("let's publish #{id}")
     bookmark = PostsDAO.find_post(id) || ''
     send_through_karmacrazy_and_twitter bookmark
   end
@@ -41,8 +41,10 @@ class AprendicesSharer
 
       message = "#{message} - #{url}"
       puts "msg:#{message}.size:#{message.size}.archive:#{archive}"
-      TwitterClient.new().publish(message) if archive
-      PostsDAO.mark_post_as_shared(bookmark.id) if archive
+      if archive
+        TwitterClient.new().publish(message)
+        PostsDAO.mark_post_as_shared(bookmark.id)
+      end
       message
     end
   end

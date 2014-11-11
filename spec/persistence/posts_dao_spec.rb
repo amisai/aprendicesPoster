@@ -75,6 +75,23 @@ describe "PostsDAO" do
     PostsDAO.delete(id)
   end
 
+  it "should mark post as unshared in database" do
+    initial_size = PostsDAO.size()
+    post = Post.new("post3a", "text3a", 'type3a', true)
+    id = PostsDAO.insert(post)
+
+    PostsDAO.mark_post_as_unshared(id)
+
+    post2 = PostsDAO.find_post(id)
+
+    post2.url.should eq("post3a")
+    post2.shared.should be false
+
+    PostsDAO.size.should equal (initial_size + 1)
+
+    PostsDAO.delete(id)
+  end
+
   it "should handle invalid values when marking post as shared in database" do
     post =Post.new("post3a", "text3a", 'type3a')
     id = PostsDAO.insert(post)
@@ -116,6 +133,22 @@ describe "PostsDAO" do
 
     posts.size.should be 1
     posts[0].url.should eq("post7")
+
+    PostsDAO.delete(id)
+    PostsDAO.delete(id2)
+  end
+
+  it "should get all shared posts from database" do
+    PostsDAO.deleteAll
+
+    id = PostsDAO.insert(Post.new("post6", "text6", 'type6'))
+    id2 = PostsDAO.insert(Post.new("post7", "text7", 'type7'))
+
+    PostsDAO.mark_post_as_shared(id)
+    posts = PostsDAO.retrieve_shared_posts
+
+    posts.size.should be 1
+    posts[0].url.should eq("post6")
 
     PostsDAO.delete(id)
     PostsDAO.delete(id2)

@@ -82,6 +82,16 @@ class PostsDAO
     result
   end
 
+  def self.retrieve_shared_posts
+    result = []
+    posts = get_collection
+
+    posts.find({"shared" => true}).sort({"_id" => -1}).each do |doc|
+      result << Post.from_hash(doc)
+    end
+    result
+  end
+
   def self.delete(id)
     posts = get_collection
     begin
@@ -100,6 +110,15 @@ class PostsDAO
     posts = get_collection
     begin
       posts.update({"_id" => get_id_as_bson(id)}, {"$set" => {"shared" => true}})
+    rescue
+      puts("problem while marking #{id} as shared")
+    end
+  end
+
+  def self.mark_post_as_unshared(id)
+    posts = get_collection
+    begin
+      posts.update({"_id" => get_id_as_bson(id)}, {"$set" => {"shared" => false}})
     rescue
       puts("problem while marking #{id} as shared")
     end

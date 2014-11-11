@@ -1,0 +1,50 @@
+<html>
+<head>
+  <title>Current posts</title>
+  <link rel="stylesheet" href="/css/aprendices.css" type="text/css" media="screen">
+  <script>
+      function markAsUnshared(id) {
+          document.getElementById('idMark').value = id;
+          document.getElementById('form1').submit();
+          return false;
+      }
+
+      function publishOnTwitter(id) {
+          document.getElementById('idPublish').value = id;
+          document.getElementById('form2').submit();
+          return false;
+      }
+
+
+      function isEmpty(formElement) {
+          if (formElement.value != undefined) {
+              var charSequence = formElement.value;
+
+              return (charSequence == undefined || charSequence.length == 0);
+          } else {
+              return false;
+          }
+      }
+  </script>
+</head>
+<body>
+<form id="form1" action="/markPostAsUnseen" method="post">
+  <input type="hidden" id="idMark" name="idMark" value="">
+  <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
+</form>
+<form id="form2" action="/publishOnTwitter" method="post">
+  <input type="hidden" id="idPublish" name="idPublish" value="">
+  <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
+</form>
+<p>Published posts (<%= @posts.size %>):</p>
+<p><a href="/list/?key=<%=ENV['KEY']%>">Pending posts</a> </p>
+<ul>
+  <% @posts.each do |post| %>
+      <!-- <%= post %> -->
+      <li>(<%= format_bson_as_time(post.id) %>)&nbsp;-&nbsp;    <a id="post_<%= post.id %>" href="<%= post.url %>"><%= post.text %></a>&nbsp;-&nbsp;(<%= post.type %>)&nbsp;-&nbsp;(<a href='javascript:markAsUnshared("<%= post.id %>");'>Mark as unshared</a>)&nbsp;-&nbsp;(<a href='javascript:publishOnTwitter("<%= post.id %>");'>Publish on Twitter</a>)</li>
+  <% end %>
+</ul>
+    </div>
+</body>
+</html>
+

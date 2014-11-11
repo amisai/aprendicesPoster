@@ -87,6 +87,7 @@
   <input type="hidden" id="key" name="key" value="<%=ENV['KEY']%>">
 </form>
 <p>Posts (<%= @posts.size %>):</p>
+<p><a href="/published/?key=<%=ENV['KEY']%>">Published posts</a> </p>
 <ul>
   <% @posts.each do |post| %>
       <!-- <%= post %> -->
