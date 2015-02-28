@@ -12,9 +12,9 @@ class AprendicesClient
     @banned_types = IO.readlines 'config/banned_types.lst'
 
     if @banned_types
-      @banned_types.map! { |type| type.chomp}
+      @banned_types.map! { |type| type.chomp }
     else
-     @banned_types = []
+      @banned_types = []
     end
 
     puts "banned_types:#{@banned_types}"
@@ -29,6 +29,8 @@ class AprendicesClient
       url = get_real_link(article)
       text = get_text(article)
       type = get_type(article)
+
+      puts "url.#{url}.text:#{text}"
 
       if (@banned_types.index(type) == nil)
         posts<<Post.new(url, text, type)
@@ -79,6 +81,7 @@ class AprendicesClient
     text1=extract_text(element1)
     text2=extract_text(element2)
     text3=extract_text(element3)
+
     select_text([text1, text2, text3])
   end
 
@@ -87,11 +90,27 @@ class AprendicesClient
   end
 
   def extract_text(element)
+    text = ''
     begin
-      element.children[0].text || element.children[0].children[0].text
+      text = element.children[0].text || element.children[0].children[0].text
+
+      element.children.drop(1).each do |child|
+        type = child.name.to_s
+
+        if type == 'text'
+          more_text = child.text || child.children[0].text
+          text = text + more_text.to_s
+        else
+          if type == 'a' && child['class'] && (child['class'].include? 'ot-hashtag')
+            more_text = child.text
+            text = text + more_text.to_s
+          end
+        end
+      end
     rescue
-      ''
+      text = ''
     end
+    text
   end
 
   def get_element(article, selector)
